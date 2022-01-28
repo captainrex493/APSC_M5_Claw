@@ -1,18 +1,26 @@
+#include <HCSR04.h>
+
 #include <Servo.h>
 
 #define echoPin 5
 #define trigPin 6
 #define servoPin 9
 
-unsigned int duration = 0;
+
 unsigned int distance = 0;
 
-int close_height = 40;
-int open_height = 100;
+int close_height = 15;
+int open_height = 60;
 
-bool flag_item = false;
+bool flag_open = false;
+bool flag_close = false;
+
+int close_counter = 0;
+int open_counter = 0;
 
 Servo servo;
+
+HCSR04 hc(trigPin,echoPin);
 
 void setup()
 {
@@ -29,23 +37,42 @@ void setup()
 }
 
 void loop() {
-  digitalWrite(trigPin, HIGH); 
-  delayMicroseconds (10); 
-  digitalWrite(trigPin, LOW);
   
-  duration = pulseIn (echoPin, HIGH);
-  
-  distance = duration*0.01715;
+  distance = hc.dist();
   
   if (distance < close_height) {
-    servo.write(180);
-    delay(15);
+    open_counter = 0;
+    if (flag_close == false) {
+      close_counter++;
+      if (close_counter > 25) {
+        flag_close = true;
+        close_counter = 0;
+      }
+    }
+    if (flag_close == true) {
+      servo.write(90);
+      delay(15);
+      flag_close = false;
+
+    }
   }
   else if (distance > open_height) {
-    servo.write(0);
+    close_counter = 0;
+    if (flag_open == false) {
+      open_counter++;
+      if (open_counter > 25) {
+        flag_open = true;
+        open_counter = 0;
+      }
+   }
+    if (flag_open == true) {
+      servo.write(0);
+      delay(15);
+      flag_open = false;
+    }
   }
   
   Serial.print (distance);
-  Serial.println ("cm");
-  delay(100); 
+  Serial.println (" cm");
+  delay(15);
 }
