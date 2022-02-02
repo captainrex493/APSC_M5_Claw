@@ -50,7 +50,7 @@ void loop() {
       }
     }
     if (flag_close == true) {
-      servo.write(90);
+      servo.write(0);
       delay(15);
       flag_close = false;
 
@@ -66,7 +66,7 @@ void loop() {
       }
    }
     if (flag_open == true) {
-      servo.write(0);
+      servo.write(180);
       delay(15);
       flag_open = false;
     }
