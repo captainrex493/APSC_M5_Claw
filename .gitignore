@@ -10,3 +10,6 @@
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+.vscode/arduino.json
+.vscode/c_cpp_properties.json
