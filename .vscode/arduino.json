@@ -1,6 +1,0 @@
-{
-    "board": "arduino:avr:uno",
-    "port": "COM4",
-    "programmer": "arduino:avrisp",
-    "sketch": "APSC_M5_Claw.ino"
-}
